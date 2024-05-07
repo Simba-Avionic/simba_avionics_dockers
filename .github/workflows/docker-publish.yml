@@ -20,5 +20,6 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and Push Docker Image
         run: |
+          cd docker_action/
           docker build -t matiko42/simba_github_action:latest .
           docker push matiko42/simba_github_action:latest
