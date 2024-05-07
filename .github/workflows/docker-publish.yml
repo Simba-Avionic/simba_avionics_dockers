@@ -23,8 +23,8 @@ jobs:
           cd docker_action/
           docker build -t matiko42/simba_github_action:latest .
           docker push matiko42/simba_github_action:latest
-      - name: Build and Push Docker Image
+      - name: Build and Push Docker devcontainer Image
         run: |
-          cd ../devcontainer/
+          cd devcontainer/
           docker build -t matiko42/simba_dev_container:latest .
           docker push matiko42/simba_dev_container:latest
