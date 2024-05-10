@@ -18,6 +18,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /var/lib/docker
+          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+  
+      
       - name: Build and Push Docker action Image
         run: |
           cd docker_action/
