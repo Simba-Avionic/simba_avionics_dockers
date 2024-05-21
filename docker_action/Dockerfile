@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-ARG BAZEL_VERSION=7.1.1
+ARG BAZEL_VERSION=5.4.1
 
 RUN apt update
 RUN apt install -y apt-transport-https curl gnupg software-properties-common
