@@ -24,7 +24,12 @@ jobs:
           path: /var/lib/docker
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
   
-      
+      - name: Build and Push Docker sim_docker Image
+        run: |
+          cd docker_sim/
+          docker build -t matiko42/simba_sim_container:latest .
+          docker push matiko42/simba_sim_container:latest
+  
       - name: Build and Push Docker action Image
         run: |
           cd docker_action/
@@ -35,8 +40,3 @@ jobs:
           cd devcontainer/
           docker build -t matiko42/simba_dev_container:latest .
           docker push matiko42/simba_dev_container:latest
-      - name: Build and Push Docker sim_docker Image
-        run: |
-          cd docker_sim/
-          docker build -t matiko42/simba_sim_container:latest .
-          docker push matiko42/simba_sim_container:latest
