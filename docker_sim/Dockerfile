@@ -30,6 +30,8 @@ RUN sed -i'' -e's/^#PermitRootLogin prohibit-password$/PermitRootLogin yes/' /et
         && sed -i'' -e's/^UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
 
 
+RUN apt install curl libcurl4-openssl-dev libjsoncpp-dev gdb -y
+
 # Otwórz port 22 dla SSH
 EXPOSE 22
 EXPOSE 3490
