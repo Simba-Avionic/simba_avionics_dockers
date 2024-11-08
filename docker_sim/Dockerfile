@@ -14,6 +14,10 @@ RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 RUN apt-get update && \
     apt-get install -y libc6 libstdc++6 gcc g++ build-essential wget
+# Instalacja serwera SSH
+RUN apt-get update
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
 
 RUN mkdir /etc/simba -p
 RUN mkdir /etc/simba/backup
