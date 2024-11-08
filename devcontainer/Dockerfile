@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/base:jammy
 
-ARG BAZEL_VERSION=5.4.1
+ARG BAZEL_VERSION=7.1.1
 
 RUN apt update
 RUN apt-get install -y \
