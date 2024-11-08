@@ -40,3 +40,10 @@ jobs:
           cd devcontainer/
           docker build -t matiko42/simba_dev_container:latest .
           docker push matiko42/simba_dev_container:latest
+      - name: Build and Push Docker jenkins
+        run: |
+          cd jenkins_node/
+          docker build -t matiko42/jenkins_node:arm64 . --platform linux/arm64
+          docker push matiko42/jenkins_node:arm64
+          docker build -t matiko42/jenkins_node:amd64 . --platform linux/amd64
+          docker push matiko42/jenkins_node:amd64

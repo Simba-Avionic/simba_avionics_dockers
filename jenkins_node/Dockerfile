@@ -26,7 +26,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         ln -s /usr/bin/bazel-$BAZEL_VERSION /usr/bin/bazel && \
         bazel --version; \
     fi
-
 # RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
 #     apt install zip && \
 #     wget https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-dist.zip; \
@@ -34,5 +33,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 #     sed -i 's/bazel_linkopts = ""/bazel_linkopts = "-latomic"/g' bazel_build/tools/cpp/unix_cc_configure.bzl; \
 #     env EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk" bash ./bazel_build/compile.sh; \
 # fi
+
+
 
 CMD ["/jenkins/start.sh"]
