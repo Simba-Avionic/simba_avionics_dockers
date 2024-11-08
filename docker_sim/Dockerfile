@@ -8,6 +8,10 @@ RUN apt-get update && apt-get install -y \
 
 RUN apt-get update && apt-get upgrade -y 
 
+# Instalacja serwera SSH
+RUN apt-get update
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
 RUN apt-get update && \
     apt-get install -y libc6 libstdc++6 gcc g++ build-essential wget
 
@@ -30,6 +34,7 @@ RUN apt install curl libcurl4-openssl-dev libjsoncpp-dev gdb -y
 
 # Otwórz port 22 dla SSH
 EXPOSE 22
+EXPOSE 3490
 
 # Uruchom SSH po starcie kontenera
 CMD ["/usr/sbin/sshd", "-D"]
