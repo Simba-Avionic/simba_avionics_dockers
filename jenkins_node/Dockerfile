@@ -5,7 +5,7 @@ ARG TARGETPLATFORM
 
 RUN apt update
 RUN apt install -y cpplint pylint
-RUN apt install -y curl git build-essential gcc g++ unzip
+RUN apt install -y curl git build-essential gcc g++ unzip qemu-user-static
 
 RUN mkdir /jenkins/
 COPY start.sh /jenkins/start.sh
@@ -35,7 +35,5 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
     chmod +x /usr/bin/bazel; \
     bazel; \
 fi
-
-
 
 CMD ["/jenkins/start.sh"]
