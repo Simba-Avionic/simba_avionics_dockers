@@ -5,7 +5,7 @@ ARG TARGETPLATFORM
 
 RUN apt update
 RUN apt install -y cpplint pylint
-RUN apt install -y curl git build-essential gcc g++ unzip qemu-user-static
+RUN apt install -y curl git build-essential gcc g++ unzip
 
 RUN mkdir /jenkins/
 COPY start.sh /jenkins/start.sh
@@ -14,9 +14,6 @@ WORKDIR /jenkins
 RUN curl -sO https://simbaj.toadres.pl/jnlpJars/agent.jar
 RUN chmod +x /jenkins/start.sh
 RUN chmod +x /jenkins/bazel.sh
-
-RUN curl -fsSL https://get.docker.com -o get-docker.sh
-RUN sh ./get-docker.sh --dry-run
 
 ENV USE_BAZEL_VERSION=${BAZEL_VERSION}
 
