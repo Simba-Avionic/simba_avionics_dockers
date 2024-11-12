@@ -18,6 +18,8 @@ RUN chmod +x /jenkins/bazel.sh
 RUN curl -fsSL https://get.docker.com -o get-docker.sh
 RUN sh ./get-docker.sh --dry-run
 
+ENV USE_BAZEL_VERSION=${BAZEL_VERSION}
+
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor >bazel-archive-keyring.gpg && \
         mv bazel-archive-keyring.gpg /usr/share/keyrings && \
@@ -26,13 +28,13 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         ln -s /usr/bin/bazel-$BAZEL_VERSION /usr/bin/bazel && \
         bazel --version; \
     fi
-# RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-#     apt install zip && \
-#     wget https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-dist.zip; \
-#     unzip bazel-$BAZEL_VERSION-dist.zip -d bazel_build && \
-#     sed -i 's/bazel_linkopts = ""/bazel_linkopts = "-latomic"/g' bazel_build/tools/cpp/unix_cc_configure.bzl; \
-#     env EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk" bash ./bazel_build/compile.sh; \
-# fi
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+    apt install zip && \
+    wget https://github.com/bazelbuild/bazelisk/releases/download/v1.8.1/bazelisk-linux-arm64; \
+    mv bazelisk-linux-arm64 /usr/bin/bazel; \
+    chmod +x /usr/bin/bazel; \
+    bazel; \
+fi
 
 
 
