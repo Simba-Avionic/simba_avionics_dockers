@@ -11,18 +11,28 @@ RUN apt-get install -y \
     apt-transport-https \
     curl \
     gnupg \
-    software-properties-common
+    software-properties-common \
+    lcov \
+    cpplint \
+    wget
 
-RUN add-apt-repository ppa:ubuntu-toolchain-r/ppa -y
-RUN apt update
-RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel-archive-keyring.gpg
-RUN mv bazel-archive-keyring.gpg /usr/share/keyrings
-RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
-RUN apt update
+ENV USE_BAZEL_VERSION=${BAZEL_VERSION}
 
-RUN apt install -y bazel-$BAZEL_VERSION cpplint git
-RUN ln -s /bin/bazel-$BAZEL_VERSION /bin/bazel
-RUN bazel --version
+RUN wget https://github.com/bazelbuild/bazelisk/releases/download/v1.23.0/bazelisk-linux-amd64
+RUN mv bazelisk-linux-amd64 /usr/bin/bazel
+RUN chmod +x /usr/bin/bazel
+RUN bazel --version;
+
+RUN wget https://gcc.gnu.org/pub/gcc/releases/gcc-13.1.0/gcc-13.1.0.tar.gz && \
+    tar -xvzf gcc-13.1.0.tar.gz && \
+    cd gcc-13.1.0 && \
+    ./contrib/download_prerequisites && \
+    ./configure --disable-multilib --enable-languages=c,c++ && \
+    make -j$(nproc) && \
+    make install && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/local/bin/gcc 60 --slave /usr/bin/g++ g++ /usr/local/bin/g++ && \
+    cd .. && \
+    rm -rf gcc-13.1.0.tar.gz gcc-13.1.0
 
 WORKDIR /workspace
 

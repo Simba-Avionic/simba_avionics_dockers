@@ -33,4 +33,18 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
     bazel; \
 fi
 
+RUN wget https://gcc.gnu.org/pub/gcc/releases/gcc-13.1.0/gcc-13.1.0.tar.gz && \
+    tar -xvzf gcc-13.1.0.tar.gz && \
+    cd gcc-13.1.0 && \
+    ./contrib/download_prerequisites && \
+    ./configure --disable-multilib --enable-languages=c,c++ && \
+    make -j$(nproc) && \
+    make install && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/local/bin/gcc 60 --slave /usr/bin/g++ g++ /usr/local/bin/g++ && \
+    cd .. && \
+    rm -rf gcc-13.1.0.tar.gz gcc-13.1.0
+
+RUN apt install lcov -y
+
+
 CMD ["/jenkins/start.sh"]
