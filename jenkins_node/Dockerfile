@@ -1,16 +1,14 @@
-FROM bitnami/java
-
-ARG BAZEL_VERSION=7.1.1
-ARG TARGETPLATFORM
+FROM ubuntu:latest
 
 RUN apt update
-RUN apt install -y curl git build-essential gcc g++ unzip lcov cpplint pylint python3 python3-pip python3-dev zip
+RUN apt install -y gcc-13 g++-13
+RUN apt install -y curl git build-essential default-jre default-jdk unzip lcov cpplint pylint python3 python3-pip python3-dev zip
+RUN apt install -y wget
 
 RUN mkdir /jenkins/
-COPY start.sh bazel.sh /jenkins/
+COPY start.sh /jenkins/
 WORKDIR /jenkins
-RUN chmod +x /jenkins/start.sh && \
-    chmod +x /jenkins/bazel.sh
+RUN chmod +x /jenkins/start.sh
 
 RUN curl -sO https://simbaj.toadres.pl/jnlpJars/agent.jar
 
