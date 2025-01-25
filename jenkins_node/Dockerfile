@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
-ARG PLATFORM=arm64
-#ARG PLATFORM=amd64
+#ARG PLATFORM=arm64
+ARG PLATFORM=amd64
 
 RUN apt update
 RUN apt install -y curl git build-essential default-jre default-jdk unzip lcov cpplint pylint python3 python3-pip python3-dev zip wget
@@ -17,5 +17,7 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/download/v1.25.0/bazeli
     mv bazelisk-linux-${PLATFORM} /usr/bin/bazel; \
     chmod +x /usr/bin/bazel; \
     bazel;
+
+RUN curl -sO https://simbaj.toadres.pl/jnlpJars/agent.jar
 
 CMD ["/jenkins/start.sh"]
