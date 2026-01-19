@@ -1,0 +1,15 @@
+services:
+  github-runner:
+    build: .
+    container_name: github-runner
+    environment:
+      - GH_RUNNER_URL=https://github.com/Simba-Avionic
+      - GH_RUNNER_TOKEN=<>
+      - GH_RUNNER_NAME=test-matik-pc
+      - RUNNER_LABELS=self-hosted,bazel
+    volumes:
+       - github-runner1-data:/runner 
+    restart: unless-stopped
+
+volumes:
+  github-runner1-data:
