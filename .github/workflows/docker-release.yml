@@ -7,6 +7,8 @@ on:
   workflow_dispatch:
 
 env:
+  RUNNER_VERSION: "2.331.0"
+  BAZELISK_VERSION: "1.28.1"
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -31,7 +33,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/github-action
+        images: ${{ env.REGISTRY }}/${{ github.repository }}/github-action
         tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
@@ -45,3 +47,6 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          RUNNER_VERSION=${{ env.RUNNER_VERSION }}
+          BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
