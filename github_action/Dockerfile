@@ -13,25 +13,49 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    ca-certificates \
-    curl \
-    git \
-    sudo \
-    jq \
-    build-essential \
-    libssl-dev \
-    libffi-dev \
-    python3 \
-    python3-pip \
-    python3-venv \
-    cpplint \
-    software-properties-common \
-    lcov && \
-    # Dodanie repozytorium .NET (dopiero jak mamy software-properties-common)
+        ca-certificates \
+        curl \
+        git \
+        sudo \
+        jq \
+        build-essential \
+        libssl-dev \
+        libffi-dev \
+        python3 \
+        python3-pip \
+        python3-venv \
+        cpplint \
+        software-properties-common \
+        lcov \
+        chrpath \
+        cpio \
+        debianutils \
+        diffstat \
+        file \
+        gawk \
+        gcc \
+        iputils-ping \
+        libacl1 \
+        locales \
+        python3-git \
+        python3-jinja2 \
+        python3-pexpect \
+        python3-subunit \
+        socat \
+        texinfo \
+        unzip \
+        wget \
+        xz-utils \
+        zstd \
+        lz4 \
+        bc \
+        bison \
+        flex && \
     add-apt-repository ppa:dotnet/backports && \
     apt-get update && \
     apt-get install -y --no-install-recommends dotnet-sdk-6.0 && \
-    # Sprzątanie cache apt, aby zmniejszyć obraz
+    locale-gen en_US.UTF-8 && \
+    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -46,7 +70,6 @@ RUN curl -o actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -L \
     tar xzf actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz && \
     rm actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
 
-# Skrypt startowy
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
