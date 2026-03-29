@@ -59,29 +59,6 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Extract metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ github.repository }}/github-action
-        tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=${{ needs.release.outputs.new_release_version }}
-
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v6
-      with:
-        context: ./github_action
-        platforms: linux/amd64
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        build-args: |
-          BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-
-
-    - name: Extract metadata
       id: meta2
       uses: docker/metadata-action@v5
       with:
@@ -98,6 +75,28 @@ jobs:
         push: true
         tags: ${{ steps.meta2.outputs.tags }}
         labels: ${{ steps.meta2.outputs.labels }}
+        build-args: |
+          BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ github.repository }}/github-action
+        tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ needs.release.outputs.new_release_version }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6
+      with:
+        context: ./github_action
+        platforms: linux/amd64
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
         build-args: |
           BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
         cache-from: type=gha
