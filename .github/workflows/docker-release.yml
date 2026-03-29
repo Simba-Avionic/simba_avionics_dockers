@@ -66,8 +66,7 @@ jobs:
         images: ${{ env.REGISTRY }}/${{ github.repository }}/github-action
         tags: |
             type=raw,value=latest,enable={{is_default_branch}}
-            type=ref,event=branch
-            type=ref,event=tag
+            type=raw,value=${{ needs.release.outputs.new_release_version }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
@@ -91,8 +90,7 @@ jobs:
         images: ${{ env.REGISTRY }}/${{ github.repository }}/docker-action
         tags: |
             type=raw,value=latest,enable={{is_default_branch}}
-            type=ref,event=branch
-            type=ref,event=tag
+            type=raw,value=${{ needs.release.outputs.new_release_version }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
