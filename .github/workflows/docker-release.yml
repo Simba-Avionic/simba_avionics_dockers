@@ -6,7 +6,6 @@ on:
       - master
 
 env:
-  RUNNER_VERSION: "2.331.0"
   BAZELISK_VERSION: "1.28.1"
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -77,7 +76,6 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         build-args: |
-          RUNNER_VERSION=${{ env.RUNNER_VERSION }}
           BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
@@ -101,7 +99,6 @@ jobs:
         tags: ${{ steps.meta2.outputs.tags }}
         labels: ${{ steps.meta2.outputs.labels }}
         build-args: |
-          RUNNER_VERSION=${{ env.RUNNER_VERSION }}
           BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
