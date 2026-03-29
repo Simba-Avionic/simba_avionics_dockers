@@ -50,3 +50,26 @@ jobs:
         build-args: |
           RUNNER_VERSION=${{ env.RUNNER_VERSION }}
           BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
+
+
+    - name: Extract metadata
+      id: meta2
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ github.repository }}/docker-action
+        tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=tag
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6
+      with:
+        context: ./docker_action
+        platforms: linux/amd64
+        push: true
+        tags: ${{ steps.meta2.outputs.tags }}
+        labels: ${{ steps.meta2.outputs.labels }}
+        build-args: |
+          RUNNER_VERSION=${{ env.RUNNER_VERSION }}
+          BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
