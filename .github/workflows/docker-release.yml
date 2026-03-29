@@ -2,9 +2,8 @@ name: Build and Release Docker Image
 
 on:
   push:
-    tags:
-      - 'v*'
-  workflow_dispatch:
+    branches:
+      - master
 
 env:
   RUNNER_VERSION: "2.331.0"
@@ -13,7 +12,35 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
+      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run Semantic Release
+        id: semantic
+        uses: cycjimmy/semantic-release-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build-and-release:
+    needs: release
+    if: needs.release.outputs.new_release_published == 'true'
     permissions:
       contents: read
       packages: write
@@ -50,6 +77,8 @@ jobs:
         build-args: |
           RUNNER_VERSION=${{ env.RUNNER_VERSION }}
           BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
 
     - name: Extract metadata
@@ -73,3 +102,5 @@ jobs:
         build-args: |
           RUNNER_VERSION=${{ env.RUNNER_VERSION }}
           BAZELISK_VERSION=${{ env.BAZELISK_VERSION }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
