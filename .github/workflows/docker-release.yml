@@ -75,7 +75,7 @@ jobs:
       uses: docker/build-push-action@v7
       with:
         context: ./docker_action
-        platforms: PLATFORMS
+        platforms: ${{ env.PLATFORMS }}
         push: true
         tags: ${{ steps.meta2.outputs.tags }}
         labels: ${{ steps.meta2.outputs.labels }}
@@ -97,7 +97,7 @@ jobs:
       uses: docker/build-push-action@v7
       with:
         context: ./github_action
-        platforms: PLATFORMS
+        platforms: ${{ env.PLATFORMS }}
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
@@ -119,7 +119,7 @@ jobs:
       uses: docker/build-push-action@v7
       with:
         context: ./devcontainer
-        platforms: PLATFORMS
+        platforms: ${{ env.PLATFORMS }}
         push: true
         tags: ${{ steps.meta3.outputs.tags }}
         labels: ${{ steps.meta3.outputs.labels }}
