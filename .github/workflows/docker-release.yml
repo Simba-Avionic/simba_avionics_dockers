@@ -62,7 +62,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Extract metadata
+    - name: Extract metadata (Latex Devcontainer)
       id: meta4
       uses: docker/metadata-action@v6
       with:
@@ -71,7 +71,7 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=${{ needs.release.outputs.new_release_version }}
 
-    - name: Build and push Docker image
+    - name: Build and push Docker image  (Latex Devcontainer)
       uses: docker/build-push-action@v7
       with:
         context: ./latex_devcontainer
@@ -82,7 +82,7 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-    - name: Extract metadata
+    - name: Extract metadata (Docker action)
       id: meta2
       uses: docker/metadata-action@v6
       with:
@@ -91,7 +91,7 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=${{ needs.release.outputs.new_release_version }}
 
-    - name: Build and push Docker image
+    - name: Build and push Docker image (Docker action)
       uses: docker/build-push-action@v7
       with:
         context: ./docker_action
@@ -104,7 +104,7 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-    - name: Extract metadata
+    - name: Extract metadata (Github Action)
       id: meta
       uses: docker/metadata-action@v6
       with:
@@ -113,7 +113,7 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=${{ needs.release.outputs.new_release_version }}
 
-    - name: Build and push Docker image
+    - name: Build and push Docker image (Github Action)
       uses: docker/build-push-action@v7
       with:
         context: ./github_action
@@ -126,7 +126,7 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-    - name: Extract metadata
+    - name: Extract metadata (Devcontainer)
       id: meta3
       uses: docker/metadata-action@v6
       with:
@@ -135,7 +135,7 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=${{ needs.release.outputs.new_release_version }}
 
-    - name: Build and push Docker image
+    - name: Build and push Docker image (Devcontainer)
       uses: docker/build-push-action@v7
       with:
         context: ./devcontainer
