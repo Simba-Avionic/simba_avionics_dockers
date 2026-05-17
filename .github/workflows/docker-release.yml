@@ -63,6 +63,26 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Extract metadata
+      id: meta4
+      uses: docker/metadata-action@v6
+      with:
+        images: ${{ env.REGISTRY }}/${{ github.repository }}/latex_devcontainer
+        tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ needs.release.outputs.new_release_version }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v7
+      with:
+        context: ./latex_devcontainer
+        platforms: ${{ env.PLATFORMS }}
+        push: true
+        tags: ${{ steps.meta4.outputs.tags }}
+        labels: ${{ steps.meta4.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Extract metadata
       id: meta2
       uses: docker/metadata-action@v6
       with:
