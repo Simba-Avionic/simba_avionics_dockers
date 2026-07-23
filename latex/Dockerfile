@@ -13,7 +13,11 @@ RUN set -eux; \
 # 2. Automatyczna akceptacja licencji MS EULA
 RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
 
-# 3. Instalacja pakietów w jednej warstwie z czyszczeniem cache
+RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common \
+    && add-apt-repository -y universe \
+    && add-apt-repository -y multiverse \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
@@ -28,11 +32,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     latexmk \
     ghostscript \
     lmodern \
+    latexdiff \
+    chktex \
+    nodejs \
+    npm \
     ttf-mscorefonts-installer \
     fontconfig \
     && fc-cache -f -v \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# (Opcjonalnie) Ustawienie katalogu roboczego, pasującego do Twojego skryptu CI
+RUN npm install -g cspell@8.17.5 \
+    && npm cache clean --force
+
 WORKDIR /workspace
